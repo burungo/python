@@ -1,0 +1,62 @@
+from random import randrange
+
+
+tablero = [" " for _ in range(9)]
+
+
+def imprimir_tablero():
+    print(f"{tablero[0]} | {tablero[1]} | {tablero[2]}")
+    print("---------")
+    print(f"{tablero[3]} | {tablero[4]} | {tablero[5]}")
+    print("---------")
+    print(f"{tablero[6]} | {tablero[7]} | {tablero[8]}")
+
+
+def verificar_ganador():
+    ganadores = [(0, 1, 2), (3, 4, 5), (6, 7, 8), (0, 3, 6), (1, 4, 7), (2, 5, 8), (0, 4, 8), (2, 4, 6)]
+    for combo in ganadores:
+        if tablero[combo[0]] == tablero[combo[1]] == tablero[combo[2]] != " ":
+            return tablero[combo[0]]
+    if " " not in tablero:
+        return "Empate"
+    return False
+
+
+def jugar_contra_maquina():
+    while True:
+        # Turno del jugador
+        imprimir_tablero()
+        movimiento = input("Ingrese su movimiento (1-9): ")
+        if tablero[int(movimiento) - 1] != " ":
+            print("Movimiento inválido, intente de nuevo.")
+            continue
+        tablero[int(movimiento) - 1] = "X"
+
+        # Verificar si hay un ganador
+        resultado = verificar_ganador()
+        if resultado:
+            imprimir_tablero()
+            if resultado == "Empate":
+                print("Empate!")
+            else:
+                print(f"Ganador: {resultado}")
+            break
+
+        # Turno de la máquina
+        movimiento_maquina = randrange(9)
+        while tablero[movimiento_maquina] != " ":
+            movimiento_maquina = randrange(9)
+        tablero[movimiento_maquina] = "O"
+
+        # Verificar si hay un ganador
+        resultado = verificar_ganador()
+        if resultado:
+            imprimir_tablero()
+            if resultado == "Empate":
+                print("Empate!")
+            else:
+                print(f"Ganador: {resultado}")
+            break
+
+
+jugar_contra_maquina()
